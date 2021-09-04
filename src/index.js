@@ -4,27 +4,27 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import fbconfig from './config/fbconfig'
+import fbConfig from './config/fbconfig'
 import { createStore, applyMiddleware, compose } from 'redux'
 import rootReducer from './store/reducers/rootReducer'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
+import 'firebase/firestore' // make sure you add this for firestore
 import { ReactReduxFirebaseProvider, getFirebase } from 'react-redux-firebase';
 import { createFirestoreInstance, getFirestore, reduxFirestore } from 'redux-firestore';
-import firebase from 'firebase/compat/app';
+import firebase from 'firebase/app';
 
 const store = createStore(rootReducer, compose(
   applyMiddleware(thunk.withExtraArgument({ getFirebase, getFirestore })),
-  reduxFirestore(fbconfig)
+  reduxFirestore(fbConfig) // redux bindings for firestore
 ))
-
 
 const rrfProps = {
   firebase,
-  config: fbconfig,
+  config: fbConfig,
   dispatch: store.dispatch,
-  createFirestoreInstance // <-- needed for using firestore
-}
+  createFirestoreInstance, // <- needed if using firestore
+};
 
 ReactDOM.render(
   <Provider store={store} >
